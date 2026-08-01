@@ -14,6 +14,15 @@ permissions:
 jobs:
   release:
     runs-on: ubuntu-latest
+    # `mise install` runs the postinstall hook, which runs `hk install --mise` and
+    # points core.hooksPath at hk — so hk's hooks fire on the commits and pushes
+    # changesets/action makes. That is wrong here in both directions: pre-push
+    # cannot resolve the tag objects `changeset publish` pushes (it looks for a
+    # merge base against origin/main and the tag is not a commit, which is what
+    # failed the release), and re-running lint/check/test in the release job only
+    # repeats what CI already ran on the pull request.
+    env:
+      HK_SKIP_HOOK: pre-commit,pre-push
     steps:
       - uses: actions/checkout@v7
       - uses: jdx/mise-action@v4   # node from .node-version; pnpm via corepack (packageManager field)
