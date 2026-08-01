@@ -1,5 +1,11 @@
 # @plexus-ms/std
 
+## 0.1.2
+
+### Patch Changes
+
+- 125d677: Update package descriptions
+
 ## 0.1.1
 
 ### Patch Changes
